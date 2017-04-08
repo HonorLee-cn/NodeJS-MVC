@@ -1,12 +1,11 @@
 'use strict'
 var Router ={
     go:function(res,req){
-        let url = req.url=='/'?'/index':req.url;
-        let URLParse = URL.parse(url,true);
-        let URLArr = URLParse.pathname.split('/');
+
+
+
         let query = URLParse.query;
-        let enterURI = String(URLArr[1]);
-        if(enterURI=='') enterURI='index';
+
 
         if(enterURI.match(WhiteList.HandlerRules)){
             return Router.getHandler(url,res,req);
@@ -46,4 +45,31 @@ var Router ={
     }
 };
 
-module.exports = Router;
+module.exports = function(req,res){
+    let URI       = req.url=='/'?'/index':req.url;
+    let URLParse  = URL.parse(URI,true);
+    let URLArr    = URLParse.pathname.split('/');
+    let enterURI  = String(URLArr[1])==''?'index':String(URLArr[1]);
+    let isAsset   = enterURI==Config.asset_path?true:false;
+
+    req._GET = URLParse.query;
+    if(isAsset){
+        let assetPath = URLArr.join('/').replace('/'+Config.asset_path,'');
+        Router.goAsset(assetPath,req,res);
+        return;
+    }
+    req._Cookie = {};
+    req.headers.cookie && req.headers.cookie.split(';').forEach(function(Cookie){
+        let parts = Cookie.split('=');
+        let key   = parts[0].trim();
+        let value = (parts[1]||'').trim();
+        if(parts.length>2){
+            parts = parts.shift();
+            value = parts.join('=').trim();
+        }
+        req._Cookie[key] = value;
+    });
+
+    Router.goHandler(URLParse.pathname,req,res);
+    return this;
+};

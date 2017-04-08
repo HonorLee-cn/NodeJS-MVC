@@ -1,10 +1,12 @@
 global.Config = {
     //Session ExpireTime min.
     SessionExpire : 30,
+    //Asset path
+    asset_path  : 'asset',
     //WhiteList
-    WhiteList : {
-        Static  : /static|images|robots\.txt|crossdomain\.xml|favicon\.ico/,
-        Handler : /index|report/
+    BlackList : {
+        // Static  : /static|images|robots\.txt|crossdomain\.xml|favicon\.ico/,
+        // Handler : /index|report/
     },
     //Mysql config
     mysql_on : false,

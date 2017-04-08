@@ -11,11 +11,10 @@ global.Core.Path = {
     Module      : ROOTPATH + '/app/modules',
     Handler     : ROOTPATH + '/app/handlers',
     View        : ROOTPATH + '/app/view',
-    Static      : ROOTPATH + '/app/static',
     Temp        : ROOTPATH + '/temp',
     Session     : ROOTPATH + '/temp/session',
-    Log         : ROOTPATH + '/log'
-
+    Log         : ROOTPATH + '/log',
+    Asset       : ROOTPATH + '/' + Config.asset_path
 };
 
 //Global Extension Require
@@ -27,6 +26,7 @@ global.ASYNC        = require('async');
 global.Base64       = require('js-base64');
 global.MD5          = require('md5');
 global.DateFormat   = require('date-format');
+global.Formidable   = require('formidable');
 global.Tracer       = require('tracer').dailyfile({root:Core.Path.Log,format : "{{timestamp}} <{{title}}> {{file}}:{{line}} {{message}}", dateformat : "HH:MM:ss.L"});
 
 //System Library load
