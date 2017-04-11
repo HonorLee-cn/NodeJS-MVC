@@ -16,9 +16,11 @@ var Router ={
         let pathArr = path.split('/');
         let Res = res;
         let Req = req;
+
         FILE.stat(handlerFile,function(err,status){
             if(err || !status.isFile()){
                 method = pathArr.pop();
+                if(pathArr.length<=1) return Router._error('No such handler ['+handlerFile+']',Res);
                 handlerFile = Core.Path.Handler + pathArr.join('/') + '.js';
                 FILE.stat(handlerFile,function(err,status){
                     if(err || !status.isFile()){
