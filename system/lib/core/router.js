@@ -44,7 +44,7 @@ var Router ={
                 Router._error('Handler ['+handlerFile+'] no such method "'+method+'"',res);
             }
         }catch(e){
-            Router._error(e,Res);
+            Router._error(e,res);
         }
     },
     _error:function(log,res){

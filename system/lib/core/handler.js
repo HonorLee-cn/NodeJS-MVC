@@ -20,7 +20,7 @@ var Handler = {
     // },
     response:function(res,data){
         if(!res) return;
-        res.writeHead(200, {'Content-Type': 'text/json'});
+        res.writeHead(200, {'Content-Type': 'text/html'});
         res.write(data);
         res.end();
     },
@@ -33,4 +33,4 @@ var Handler = {
     }
 }
 
-module.exports=Handler;
+module.exports = Handler;
