@@ -73,7 +73,7 @@ var Module = function(table){
     };
     instance.run = function(callback){
         let query = [],queryStr;
-        let whereStr = where?('where '+where.join(' and '):'';
+        let whereStr = where?('where '+where.join(' and ')):'';
         switch(method){
             case 'select':
                 query = ['select',rows.join(','),'from',tableName,whereStr];
