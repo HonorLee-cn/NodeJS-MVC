@@ -19,7 +19,10 @@ var Handler = {
 
     // },
     response:function(res,data){
-
+        if(!res) return;
+        res.writeHead(200, {'Content-Type': 'text/json'});
+        res.write(data);
+        res.end();
     },
     apiResponse:function(res,data){
         if(!res) return;
