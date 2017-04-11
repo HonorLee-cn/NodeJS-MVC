@@ -4,10 +4,7 @@ global.Config = {
     //Asset path
     asset_path  : 'asset',
     //WhiteList
-    BlackList : {
-        // Static  : /static|images|robots\.txt|crossdomain\.xml|favicon\.ico/,
-        // Handler : /index|report/
-    },
+    BlackList : {},
     //Mysql config
     mysql_on : false,
     mysql_cfg : {
