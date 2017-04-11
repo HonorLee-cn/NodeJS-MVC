@@ -9,8 +9,6 @@ var Static = {
             return;  
         }
         if(ext.match(/png|jpg|jpeg|gif/)){
-            // res.writeHead(404, {'Content-Type': 'text/html'});
-            // res.end();
             IMAGE.load(URL.parse(assetFile,true).pathname,ext,req,res);
         }else if(FILE.existsSync(assetFile)){
             var data;
