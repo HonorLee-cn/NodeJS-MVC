@@ -83,6 +83,8 @@ var Module = function(table){
                 break;
         }
         queryStr = query.join(' ');
-        console.log(queryStr);
+        MysqlDB.query(queryStr,function(err,result,fields){
+            if(callback && typeof callback === 'function') callback(err,result);
+        })
     }
 };
