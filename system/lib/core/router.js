@@ -1,45 +1,52 @@
 'use strict'
 var Router ={
-    go:function(res,req){
-
-
-
-        let query = URLParse.query;
-
-
-        if(enterURI.match(WhiteList.HandlerRules)){
-            return Router.getHandler(url,res,req);
-        }else if(enterURI.match(WhiteList.StaticRules)){
-            return STATIC.load(ROOTPATH+URLParse.pathname,query,res);
-        }else{
-            Router._error('Router Go ERROR:'+url,res);
-            Logger.error(url+' WhiteList Check error!');
-        }
-    },
-    getHandler:function(url,res,req){
-        let URLParse = URL.parse(HANDLERPATH+url,true);
-        let URLArr = URLParse.pathname.split('/');
-        if(URLArr[URLArr.length-1]=='') URLArr[URLArr.length-1]='index';
-        let FileName = URLArr.join('/')+'.js';
-        let mod,call='index';
-        if(!FILE.existsSync(FileName)){
-            call = URLArr.pop();
-            FileName = URLArr.join('/')+'.js';
-        }
-        try{
-            mod = require(FileName);
-            if(mod['__construct']){
-                let cons = mod['__construct'](res,req,URLParse.query);
-                if(cons && cons.status=='error') Router._error('Router Go ERROR:'+cons.msg,res);
+    goAsset:function(path,req,res){
+        let assetFile = Core.Path.Asset+path;
+        FILE.stat(assetFile,function(err,status){
+            if(err || !status.isFile()){
+                Router._error('path',res);
+            }else{
+                STATIC.load(assetFile,req,res);
             }
-            mod[call](res,req,URLParse.query);
-        }catch(err){
-            Logger.error(err);
-            res.writeHead(404, {'Content-Type': 'text/html'});
-            res.end('404');
+        });
+    },
+    goHandler:function(path,req,res){
+        let handlerFile = Core.Path.Handler + path + '.js';
+        let method = 'index';
+        let pathArr = path.split('/');
+        let Res = res;
+        let Req = req;
+        FILE.stat(handlerFile,function(err,status){
+            if(err || !status.isFile()){
+                method = pathArr.pop();
+                handlerFile = Core.Path.Handler + pathArr.join('/') + '.js';
+                FILE.stat(handlerFile,function(err,status){
+                    if(err || !status.isFile()){
+                        Router._error('No such handler ['+handlerFile+']',Res);
+                    }else{
+                        Router.runHandler(handlerFile,method,Req,Res);
+                    }
+                });
+            }else{
+                Router.runHandler(handlerFile,method,Req,Res);
+            }
+        });
+    },
+    runHandler:function(handlerFile,method,req,res){
+        try {
+            let handler = require(handlerFile);
+            if(typeof handler[method]==='function'){
+                if(typeof handler['__construct']==='function') handler['__construct'](req,res);
+                handler[method](req,res);
+            }else{
+                Router._error('Handler ['+handlerFile+'] no such method "'+method+'"',res);
+            }
+        }catch(e){
+            Router._error(e,Res);
         }
     },
-    _error:function(log,res,req){
+    _error:function(log,res){
+        LOGGER.error(log);
         res.writeHead(404, {'Content-Type': 'text/html'});
         res.end('404');
     }
@@ -50,7 +57,7 @@ module.exports = function(req,res){
     let URLParse  = URL.parse(URI,true);
     let URLArr    = URLParse.pathname.split('/');
     let enterURI  = String(URLArr[1])==''?'index':String(URLArr[1]);
-    let isAsset   = enterURI==Config.asset_path?true:false;
+    let isAsset   = enterURI == Config.asset_path;
 
     req._GET = URLParse.query;
     if(isAsset){
@@ -69,7 +76,6 @@ module.exports = function(req,res){
         }
         req._Cookie[key] = value;
     });
-
     Router.goHandler(URLParse.pathname,req,res);
     return this;
 };

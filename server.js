@@ -19,7 +19,7 @@ let serverPort = 8000;
 try{
     require('http').createServer(serverHandler).listen(serverPort);
     LOGGER.info('Child Server start at port [' + serverPort + '] | ' + DateFormat('yyyy/MM/dd hh:mm:ss', new Date()));
-}else{
+}catch(e){
     LOGGER.error('Child Server failed start at port [' + serverPort + '] | ' + DateFormat('yyyy/MM/dd hh:mm:ss', new Date()));
 }
 

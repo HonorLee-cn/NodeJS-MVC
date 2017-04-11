@@ -2,7 +2,6 @@
 var Session = {
     set:function(key,value,sessionid){
         if(!key || !value) return null;
-
         let sessionData;
         if(sessionid){
             try{

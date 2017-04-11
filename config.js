@@ -15,7 +15,8 @@ global.Config = {
         port:3389,
         user:'root',
         password:'',
-        database:''
+        database:'',
+        prefix:''
     },
     //Mongodb config
     mongodb_on : false,
@@ -24,7 +25,9 @@ global.Config = {
         port:27017,
         user:null,
         password:'',
-        database:''
+        database:'',
+        prefix:''
+
     },
     //If Debug on,log && info logs will output in console;except Error!
     debug:true,

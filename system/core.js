@@ -27,6 +27,9 @@ global.Base64       = require('js-base64');
 global.MD5          = require('md5');
 global.DateFormat   = require('date-format');
 global.Formidable   = require('formidable');
+global.MIME         = require('mime-types');
+global.Path         = require('path');
+
 global.Tracer       = require('tracer').dailyfile({root:Core.Path.Log,format : "{{timestamp}} <{{title}}> {{file}}:{{line}} {{message}}", dateformat : "HH:MM:ss.L"});
 
 //System Library load
@@ -58,8 +61,38 @@ if(Config && Config.mysql_on && Config.mysql_cfg){
         pool:Core.Setting.mysql_pool,
         db:Config.mysql_cfg
     };
-    global.MysqlPool  = require(Core.Path.ExtraLib + '/mysql-pool.js').instance(mysqlConfig);
-    global.MysqlDB    = require(Core.Path.Helper + '/mysqldb.js');
+    let MysqlPool  = require(Core.Path.ExtraLib + '/mysql-pool.js').instance(mysqlConfig);
+    
+    // global.MysqlPool  = require(Core.Path.ExtraLib + '/mysql-pool.js').instance(mysqlConfig);
+    // global.MysqlDB    = require(Core.Path.Helper + '/mysqldb.js');
+    MysqlPool.getConnection(Core.Setting.mysql_pool.name).query('SELECT VERSION() as version',function(err,result,fields){
+        if(err){
+            LOGGER.error('Mysql Connect error,please recheck your config');
+            LOGGER.error(err);
+        }else{
+            LOGGER.info('Mysql Connect success');
+            LOGGER.info('Mysql Version: ' + result[0]['version'] + ' | User: ' + Config.mysql_cfg.user + ' | Database: ' + Config.mysql_cfg.database);
+            global.MysqlPool = MysqlPool;
+            global.MysqlDB   = require(Core.Path.Helper + '/mysqldb.js');
+        }
+    });
+}
+
+//If Mongodb on,load Mongodb Extension
+if(Config && Config.mongodb_on && Config.mongodb_cfg && Config.mongodb_cfg.database){
+    let verify = Config.mongodb_cfg.user?Config.mongodb_cfg.user+':'+Config.mongodb_cfg.password+'@':'';
+    let mongoConnect = 'mongodb://' + verify + Config.mongodb_cfg.host+':'+Config.mongodb_cfg.port+'/'+Config.mongodb_cfg.database;
+    require('mongodb').MongoClient.connect(mongoConnect,function(err,db){
+        if(err) {
+            Logger.error('MongoDB connect error!',true);
+            Logger.error('Server start failed. Log has been saved!');
+            // Logger.out(err);
+            return;
+        }
+        LOGGER.info('Mongodb Connect success');
+        global.MongoDB = {db:db};
+        
+    });
 }
 
 //Check File Paths
