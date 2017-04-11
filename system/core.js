@@ -29,6 +29,7 @@ global.DateFormat   = require('date-format');
 global.Formidable   = require('formidable');
 global.MIME         = require('mime-types');
 global.Path         = require('path');
+global.Request      = require('request');
 
 global.Tracer       = require('tracer').dailyfile({root:Core.Path.Log,format : "{{timestamp}} <{{title}}> {{file}}:{{line}} {{message}}", dateformat : "HH:MM:ss.L"});
 
