@@ -85,8 +85,8 @@ if(Config && Config.mongodb_on && Config.mongodb_cfg && Config.mongodb_cfg.datab
     let mongoConnect = 'mongodb://' + verify + Config.mongodb_cfg.host+':'+Config.mongodb_cfg.port+'/'+Config.mongodb_cfg.database;
     require('mongodb').MongoClient.connect(mongoConnect,function(err,db){
         if(err) {
-            Logger.error('MongoDB connect error!',true);
-            Logger.error('Server start failed. Log has been saved!');
+            Tracer.error('MongoDB connect error!',true);
+            Tracer.error('Server start failed. Log has been saved!');
             // Logger.out(err);
             return;
         }
