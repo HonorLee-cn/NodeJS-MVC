@@ -4,15 +4,23 @@ var View = function(src,params){
     this.html = '';
     this.params = params?params:{};
 
+    let viewPath = src;
     if(!src.match(Core.Path.View)){
-        src = Core.Path.View + src + '.html';
+        viewPath = Core.Path.View + '/' + src + '.html';
+    }
+    try{
+        FILE.statSync(viewPath);
+    }catch(e){
+        LOGGER.error('No such view template ['+src+']');
+        return null;
     }
 
     try{
-        FILE.statSync(src);
-        var data = FILE.readFileSync(src,'UTF-8');
+        var data = FILE.readFileSync(viewPath,'UTF-8');
         this.html = EJS.render(data,this.params);
     }catch(e){
+        LOGGER.error('View template render error ['+src+']');
+        LOGGER.error(e);
         return null;
     }
     
