@@ -5,13 +5,14 @@ var View = function(src,params){
     this.params = params?params:{};
 
     if(!src.match(Core.Path.View)){
-        src = Core.Path.View + src;
+        src = Core.Path.View + src + '.html';
     }
 
-    if(FILE.existsSync(src)){
+    try{
+        FILE.statSync(src);
         var data = FILE.readFileSync(src,'UTF-8');
         this.html = EJS.render(data,this.params);
-    }else{
+    }catch(e){
         return null;
     }
     
