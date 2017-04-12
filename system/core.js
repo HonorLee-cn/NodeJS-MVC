@@ -68,11 +68,11 @@ if(Config && Config.mysql_on && Config.mysql_cfg){
     // global.MysqlDB    = require(Core.Path.Helper + '/mysqldb.js');
     MysqlPool.getConnection(Core.Setting.mysql_pool.name).query('SELECT VERSION() as version',function(err,result,fields){
         if(err){
-            LOGGER.error('Mysql Connect error,please recheck your config');
-            LOGGER.error(err);
+            Tracer.error('Mysql Connect error,please recheck your config');
+            Tracer.error(err);
         }else{
-            LOGGER.info('Mysql Connect success');
-            LOGGER.info('Mysql Version: ' + result[0]['version'] + ' | User: ' + Config.mysql_cfg.user + ' | Database: ' + Config.mysql_cfg.database);
+            Tracer.info('Mysql Connect success');
+            Tracer.info('Mysql Version: ' + result[0]['version'] + ' | User: ' + Config.mysql_cfg.user + ' | Database: ' + Config.mysql_cfg.database);
             global.MysqlPool = MysqlPool;
             global.MysqlDB   = require(Core.Path.Helper + '/mysqldb.js');
         }
@@ -90,7 +90,7 @@ if(Config && Config.mongodb_on && Config.mongodb_cfg && Config.mongodb_cfg.datab
             // Logger.out(err);
             return;
         }
-        LOGGER.info('Mongodb Connect success');
+        Tracer.info('Mongodb Connect success');
         global.MongoDB = {db:db};
         
     });
