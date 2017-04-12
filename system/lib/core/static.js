@@ -20,15 +20,9 @@ var Static = {
                     res.end();
                     return false;            
                 }
-                if(ext.match(/json/)){
-                    res.writeHead(200, { "Content-Type": MIME.lookup(ext)+';charset=utf-8'});
-                    res.end(data,'utf-8');
-                }else{
-                    res.writeHead(200, { "Content-Type": MIME.lookup(ext)+';charset=utf-8','Content-Encoding':'gzip'});
-                    res.end(data,'utf-8');
-                }
+                res.writeHead(200, { "Content-Type": MIME.lookup(ext)+';charset=utf-8'});
+                res.end(data,'utf-8');
                  //console.log(query)   
-            }else if(ext.match(/json/)){
             }else{
                 try{
                     data = FILE.readFileSync(assetFile,'binary');
