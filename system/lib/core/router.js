@@ -4,7 +4,7 @@ var Router ={
         let assetFile = Core.Path.Asset+path;
         FILE.stat(assetFile,function(err,status){
             if(err || !status.isFile()){
-                Router._error('path',res);
+                Router._error('No such file ['+path+']',Res);
             }else{
                 STATIC.load(assetFile,req,res);
             }
@@ -44,7 +44,7 @@ var Router ={
                 Router._error('Handler ['+handlerFile+'] no such method "'+method+'"',res);
             }
         }catch(e){
-            Router._error(e,res);
+            Router._error(e.stack,res);
         }
     },
     _error:function(log,res){
