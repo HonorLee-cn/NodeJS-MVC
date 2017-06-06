@@ -92,7 +92,10 @@ if(Config && Config.mongodb_on && Config.mongodb_cfg && Config.mongodb_cfg.datab
         }
         Tracer.info('Mongodb Connect success');
         global.MongoDB = {db:db};
-        
+        global.MG = function(collection){
+            if(!collection) return null;
+            return MongoDB.db.collection(Config.mongodb_cfg.prefix+collection);
+        };
     });
 }
 
