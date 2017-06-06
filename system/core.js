@@ -68,11 +68,11 @@ if(Config && Config.mysql_on && Config.mysql_cfg){
     // global.MysqlDB    = require(Core.Path.Helper + '/mysqldb.js');
     MysqlPool.getConnection(Core.Setting.mysql_pool.name).query('SELECT VERSION() as version',function(err,result,fields){
         if(err){
-            Tracer.error('Mysql Connect error,please recheck your config');
-            Tracer.error(err);
+            LOGGER.error('Mysql Connect error,please recheck your config');
+            LOGGER.error(err);
         }else{
-            Tracer.info('Mysql Connect success');
-            Tracer.info('Mysql Version: ' + result[0]['version'] + ' | User: ' + Config.mysql_cfg.user + ' | Database: ' + Config.mysql_cfg.database);
+            LOGGER.info('Mysql Connect success');
+            LOGGER.info('Mysql Version: ' + result[0]['version'] + ' | User: ' + Config.mysql_cfg.user + ' | Database: ' + Config.mysql_cfg.database);
             global.MysqlPool = MysqlPool;
             global.MysqlDB   = require(Core.Path.Helper + '/mysqldb.js');
         }
@@ -85,12 +85,12 @@ if(Config && Config.mongodb_on && Config.mongodb_cfg && Config.mongodb_cfg.datab
     let mongoConnect = 'mongodb://' + verify + Config.mongodb_cfg.host+':'+Config.mongodb_cfg.port+'/'+Config.mongodb_cfg.database;
     require('mongodb').MongoClient.connect(mongoConnect,function(err,db){
         if(err) {
-            Tracer.error('MongoDB connect error!',true);
-            Tracer.error('Server start failed. Log has been saved!');
+            LOGGER.error('MongoDB connect error!',true);
+            LOGGER.error('Server start failed. Log has been saved!');
             // Logger.out(err);
             return;
         }
-        Tracer.info('Mongodb Connect success');
+        LOGGER.info('Mongodb Connect success');
         global.MongoDB = {db:db};
         global.MG = function(collection){
             if(!collection) return null;
