@@ -4,7 +4,7 @@ var Router ={
         let assetFile = Core.Path.Asset+path;
         FILE.stat(assetFile,function(err,status){
             if(err || !status.isFile()){
-                Router._error('No such file ['+path+']',Res);
+                Router._error('No such file ['+path+']',res);
             }else{
                 STATIC.load(assetFile,req,res);
             }
