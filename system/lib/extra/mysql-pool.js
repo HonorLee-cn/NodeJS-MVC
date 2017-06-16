@@ -55,7 +55,6 @@ var client = {
     freeConnection: function(name,con){
         var pool = this.pools[name];
         if(pool){
-            console.log(1)
             pool.freeConnection(con);
         }
     },
