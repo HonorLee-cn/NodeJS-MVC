@@ -39,6 +39,7 @@ CoreLibFiles.forEach(function(filename){
     let nameWithOutMimeType = (filename.split('.')[0]).toUpperCase();
     try {
         global[nameWithOutMimeType] = require(Core.Path.CoreLib + '/' + filename);
+        if(typeof global[nameWithOutMimeType] == 'object' && global[nameWithOutMimeType]['__construct']) global[nameWithOutMimeType]['__construct']();
     }catch(e){
         console.log('[Core] Core library file ['+filename+'] load error!');
         Tracer.error('[Core] Core library file ['+filename+'] load error!');
