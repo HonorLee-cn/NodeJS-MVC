@@ -5,6 +5,7 @@ module.exports = {
                 LOGGER.error('Helper name undefined!!');
                 return null
             }
+            healperName = healperName.toLowerCase();
             try{
                 FILE.statSync(Core.Path.Helper + '/'+healperName+'.js');
             }catch(e){
