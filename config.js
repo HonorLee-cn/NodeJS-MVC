@@ -9,7 +9,7 @@ global.Config = {
     mysql_on : false,
     mysql_cfg : {
         host:'localhost',
-        port:3389,
+        port:3306,
         user:'root',
         password:'',
         database:'',
