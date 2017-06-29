@@ -38,8 +38,9 @@ var Router ={
         try {
             let handler = require(handlerFile);
             if(typeof handler[method]==='function'){
-                if(typeof handler['__construct']==='function') handler['__construct'](req,res);
-                handler[method](req,res);
+                let noBypass = true;
+                if(typeof handler['__construct']==='function') noBypass = handler['__construct'](req,res);
+                if(noBypass) handler[method](req,res);
             }else{
                 Router._error('Handler ['+handlerFile+'] no such method "'+method+'"',res);
             }

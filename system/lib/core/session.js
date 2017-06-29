@@ -20,7 +20,7 @@ var Session = {
         FILE.writeFileSync(Core.Path.Session + sessionid,JSON.stringify(sessionData),'UTF-8');
         return sessionid;
     },
-    get:function(sessionid){
+    get:function(sessionid,key){
         if(!sessionid) return null;
         let sessionData;
         try{
@@ -31,6 +31,11 @@ var Session = {
             }
         }catch(e){
             sessionData = null;
+        }
+        if(key && sessionData){
+            if(sessionData[key]!=undefined) return sessionData[key];
+        }else{
+            return null;
         }
         return sessionData;
     },
