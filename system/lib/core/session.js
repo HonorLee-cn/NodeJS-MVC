@@ -5,7 +5,7 @@ var Session = {
         let sessionData;
         if(sessionid){
             try{
-                sessionData = JSON.parse(FILE.readFileSync(Core.Path.Session + 'sessionid','UTF-8'));
+                sessionData = JSON.parse(FILE.readFileSync(Core.Path.Session + '/' + sessionid,'UTF-8'));
             }catch(e){
                 sessionid = '';
             }
@@ -17,14 +17,14 @@ var Session = {
 
         sessionData[key]=value;
 
-        FILE.writeFileSync(Core.Path.Session + sessionid,JSON.stringify(sessionData),'UTF-8');
+        FILE.writeFileSync(Core.Path.Session + '/' + sessionid,JSON.stringify(sessionData),'UTF-8');
         return sessionid;
     },
     get:function(sessionid,key){
         if(!sessionid) return null;
         let sessionData;
         try{
-            sessionData = JSON.parse(FILE.readFileSync(Core.Path.Session + 'sessionid','UTF-8'));
+            sessionData = JSON.parse(FILE.readFileSync(Core.Path.Session + '/' + sessionid,'UTF-8'));
             if(sessionData.expire < new Date().getTime()){
                 sessionData = null;
                 Session.clear(sessionid);
@@ -42,7 +42,7 @@ var Session = {
     clear:function(sessionid){
         if(!sessionid) return;
         try{
-            FILE.rmdirSync(Core.Path.Session + 'sessionid');
+            FILE.rmdirSync(Core.Path.Session + '/' + sessionid);
         }catch(e){}
     }
 };
