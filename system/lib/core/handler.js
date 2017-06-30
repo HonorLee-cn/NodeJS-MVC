@@ -20,21 +20,21 @@ var Handler = {
     // },
     response:function(res,data){
         if(!res) return;
-        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.writeHead(200, {'Content-Type': 'text/html; charset=UTF-8'});
         res.write(data);
         res.end();
     },
     apiResponse:function(res,data){
         if(!res) return;
         data = data?{success:1,result:data}:{success:1};
-        res.writeHead(200, {'Content-Type': 'text/json'});
+        res.writeHead(200, {'Content-Type': 'text/json; charset=UTF-8'});
         res.write(JSON.stringify(data));
         res.end();
     },
     apiErrorResponse:function(res,msg){
         if(!res) return;
         msg = msg?{success:0,msg:msg}:{success:0};
-        res.writeHead(200, {'Content-Type': 'text/json'});
+        res.writeHead(200, {'Content-Type': 'text/json; charset=UTF-8'});
         res.write(JSON.stringify(msg));
         res.end();
     }
