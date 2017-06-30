@@ -33,9 +33,11 @@ var Session = {
             sessionData = null;
         }
         if(key && sessionData){
-            if(sessionData[key]!=undefined) return sessionData[key];
-        }else{
-            return null;
+            if(sessionData[key]!=undefined){
+                return sessionData[key];
+            }else{
+                return null;
+            }
         }
         return sessionData;
     },
