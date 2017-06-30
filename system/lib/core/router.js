@@ -40,7 +40,7 @@ var Router ={
             if(typeof handler[method]==='function'){
                 let noBypass = true;
                 if(typeof handler['__construct']==='function') noBypass = handler['__construct'](req,res);
-                if(noBypass) handler[method](req,res);
+                if(noBypass || noBypass===undefined) handler[method](req,res);
             }else{
                 Router._error('Handler ['+handlerFile+'] no such method "'+method+'"',res);
             }
