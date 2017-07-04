@@ -29,6 +29,7 @@ function serverHandler(req,res){
         let form = new Formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
             req._POST = fields;
+            req._UPLOAD = files;
             new ROUTER(req,res);
         });
     }else{
