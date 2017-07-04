@@ -3,6 +3,7 @@ global.Config = {
     SessionExpire : 30,
     //Asset path
     asset_path  : 'asset',
+    upload_path : 'asset/upload',
     //WhiteList
     BlackList : {},
     //Mysql config

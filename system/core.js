@@ -14,7 +14,8 @@ global.Core.Path = {
     Temp        : ROOTPATH + '/temp',
     Session     : ROOTPATH + '/temp/session',
     Log         : ROOTPATH + '/log',
-    Asset       : ROOTPATH + '/' + Config.asset_path
+    Asset       : ROOTPATH + '/' + Config.asset_path,
+    Upload      : ROOTPATH + '/' + Config.upload_path
 };
 
 //Global Extension Require
