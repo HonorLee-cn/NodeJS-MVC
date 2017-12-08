@@ -68,7 +68,9 @@ if(Config && Config.mysql_on && Config.mysql_cfg){
     
     // global.MysqlPool  = require(Core.Path.ExtraLib + '/mysql-pool.js').instance(mysqlConfig);
     // global.MysqlDB    = require(Core.Path.Helper + '/mysqldb.js');
-    MysqlPool.getConnection(Core.Setting.mysql_pool.name).query('SELECT VERSION() as version',function(err,result,fields){
+    let testMysqlCon = MysqlPool.getConnection(Core.Setting.mysql_pool.name);
+    testMysqlCon.query('SELECT VERSION() as version',function(err,result,fields){
+        MysqlPool.freeConnection(Core.Setting.mysql_pool.name,testMysqlCon);
         if(err){
             LOGGER.error('Mysql Connect error,please recheck your config');
             LOGGER.error(err);

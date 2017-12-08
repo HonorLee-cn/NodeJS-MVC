@@ -9,6 +9,15 @@ var pool = function(config){
 
     this.newConnection = function(){
         var con = Mysql.createConnection(config.db);
+        con.on('error', function(err) {
+            if(err.code === 'PROTOCOL_CONNECTION_LOST') {
+                console.log('Connection reconnect!')
+                con = Mysql.createConnection(config.db)
+            }else{
+                console.log('MYSQL on error:')
+                console.log(err);
+            }
+        });
         return con;
     };
     this.getConnection = function(){
