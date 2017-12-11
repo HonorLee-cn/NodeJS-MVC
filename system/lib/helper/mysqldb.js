@@ -1,10 +1,11 @@
 'use strict'
 module.exports={
     query:function(query,callback){
-        let mysql = MysqlPool.getConnection(Core.Setting.mysql_pool.name);
-        mysql.query(query,function(err, results, fields) {  
-            MysqlPool.freeConnection(Core.Setting.mysql_pool.name,mysql);
-            callback(err,results,fields);
+        MysqlPool.getConnection(function(err,con){
+            con.query(query,function(err, results, fields) {  
+                con.release();
+                if(callback && typeof(callback)=='function') callback(err,results,fields);
+            });
         });
     }
 };

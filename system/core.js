@@ -50,37 +50,28 @@ CoreLibFiles.forEach(function(filename){
 
 
 //Core Setting,just change it if necessary!
-global.Core.Setting = {
-    //Mysql connect pool setting
-    mysql_pool:{
-        name: 'NMVCPOOL',
-        maxconn: 5
-    }
-};
+global.Core.Setting = {};
 
 //If Mysql on,load Mysql Extension
 if(Config && Config.mysql_on && Config.mysql_cfg){
-    let mysqlConfig = {
-        pool:Core.Setting.mysql_pool,
-        db:Config.mysql_cfg
-    };
-    let MysqlPool  = require(Core.Path.ExtraLib + '/mysql-pool.js').instance(mysqlConfig);
-    
-    // global.MysqlPool  = require(Core.Path.ExtraLib + '/mysql-pool.js').instance(mysqlConfig);
-    // global.MysqlDB    = require(Core.Path.Helper + '/mysqldb.js');
-    let testMysqlCon = MysqlPool.getConnection(Core.Setting.mysql_pool.name);
-    testMysqlCon.query('SELECT VERSION() as version',function(err,result,fields){
-        MysqlPool.freeConnection(Core.Setting.mysql_pool.name,testMysqlCon);
-        if(err){
-            LOGGER.error('Mysql Connect error,please recheck your config');
-            LOGGER.error(err);
-        }else{
-            LOGGER.info('Mysql Connect success');
-            LOGGER.info('Mysql Version: ' + result[0]['version'] + ' | User: ' + Config.mysql_cfg.user + ' | Database: ' + Config.mysql_cfg.database);
-            global.MysqlPool = MysqlPool;
-            global.MysqlDB   = require(Core.Path.Helper + '/mysqldb.js');
+    let MysqlPool    = require(Core.Path.ExtraLib + '/mysql-pool.js').instance(Config.mysql_cfg);
+    let testMysqlCon = MysqlPool.getConnection(function(err,connection){
+        connection.release();
+        if(!err){
+            connection.query('SELECT VERSION() as version',function(err,result,fields){
+                if(err){
+                    LOGGER.error('Mysql Connect error,please recheck your config');
+                    LOGGER.error(err);
+                }else{
+                    LOGGER.info('Mysql Connect success');
+                    LOGGER.info('Mysql Version: ' + result[0]['version'] + ' | User: ' + Config.mysql_cfg.user + ' | Database: ' + Config.mysql_cfg.database);
+                    global.MysqlPool = MysqlPool;
+                    global.MysqlDB   = require(Core.Path.Helper + '/mysqldb.js');
+                }
+            });
         }
     });
+    
 }
 
 //If Mongodb on,load Mongodb Extension

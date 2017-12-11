@@ -14,7 +14,8 @@ global.Config = {
         user:'root',
         password:'',
         database:'',
-        prefix:''
+        prefix:'',
+        connectionLimit:10
     },
     //Mongodb config
     mongodb_on : false,
