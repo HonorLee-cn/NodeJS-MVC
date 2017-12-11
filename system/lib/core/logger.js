@@ -3,12 +3,16 @@ const colors = require('colors');
 
 var Logger = {
     log:function(msg){
-        if(Config.debug) console.log(('[LOG] '+msg).yellow);
+        console.log('[LOG] '+msg);
         if(Config.write_log_file) this.out('log',msg);
     },
     info:function(msg){
-        if(Config.debug) console.log(('[INF] '+msg).green);
+        console.log(('[INF] '+msg).green);
         if(Config.write_log_file) this.out('info',msg);
+    },
+    debug:function(msg){
+        if(Config.debug) console.log(('[DEBUG] '+msg).yellow);
+        if(Config.write_log_file) this.out('debug',msg);
     },
     error:function(msg){
         console.log(('[ERR] '+msg).red);
