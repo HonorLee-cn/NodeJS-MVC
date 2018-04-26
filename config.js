@@ -1,6 +1,9 @@
 global.Config = {
+    ServerName:'',
+    ServerPort:8080,
     //Session ExpireTime min.
     SessionExpire : 30,
+    RenewSessionOnRead:true,
     //Asset path
     asset_path  : 'asset',
     upload_path : 'asset/upload',

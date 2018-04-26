@@ -11,16 +11,17 @@
   DO NOT CHANGE ANYTHING IN THIS FILE!
  */
 global.ROOTPATH = __dirname;
+global.serverUID = (Math.ceil(Math.random()*61439+4096)).toString(16).toUpperCase();
+
 require('./config.js');
 require('./system/core.js');
 
-let serverPort = 8000;
-
+let serverPort = Config.ServerPort;
 try{
     require('http').createServer(serverHandler).listen(serverPort);
-    LOGGER.info('Child Server start at port [' + serverPort + '] | ' + DateFormat('yyyy/MM/dd hh:mm:ss', new Date()));
+    LOGGER.info('Child Server ['+serverUID+'] start at port [' + serverPort + '] | ' + DateFormat('yyyy/MM/dd hh:mm:ss', new Date()));
 }catch(e){
-    LOGGER.error('Child Server failed start at port [' + serverPort + '] | ' + DateFormat('yyyy/MM/dd hh:mm:ss', new Date()));
+    LOGGER.error('Child Server ['+serverUID+'] failed start at port [' + serverPort + '] | ' + DateFormat('yyyy/MM/dd hh:mm:ss', new Date()));
 }
 
 
